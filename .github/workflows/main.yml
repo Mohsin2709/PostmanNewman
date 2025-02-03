@@ -3,39 +3,36 @@ name: Run Postman Tests
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch (or your default branch)
-  pull_request:
-    branches:
-      - main  # Trigger on pull requests to the main branch
+      - main  # Runs on push to the main branch (or any specific branch you want)
 
 jobs:
-  run-postman-tests:
-    runs-on: ubuntu-latest  # Runs on the latest Ubuntu runner
+  test:
+    runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
+      # Step 1: Checkout code
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Step 2: Set up Node.js (this is needed for Newman)
+      # Step 2: Set up Node.js (needed for Newman)
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'  # Choose the Node.js version you need
+          node-version: '16'  # Or any Node.js version you need
 
-      # Step 3: Install Newman globally
+      # Step 3: Install dependencies (Newman)
       - name: Install dependencies
         run: |
           npm install -g newman  # Install Newman globally
 
-      # Step 4: Run Postman tests
+      # Step 4: Run Postman tests with Newman
       - name: Run Postman Collection with Newman
         run: |
-          newman run NewmanAPI/API_Chaning.postman_collection.json  # Run your Postman collection
+          newman run NewmanAPI/API_Chaning.postman_collection.json  # Adjust path if needed
 
-      # Step 5: Upload Newman Results
+      # Step 5: Upload test results as artifact
       - name: Upload Newman Results
-        uses: actions/upload-artifact@v3  # Updated to the latest version
+        uses: actions/upload-artifact@v4  # Use v4 of the artifact upload action
         with:
           name: newman-results
-          path: newman-results.json  # Adjust if you want to store detailed results for later
+          path: newman-results.json  # Adjust path to where Newman results are saved
