@@ -33,9 +33,9 @@ jobs:
         run: |
           newman run NewmanAPI/API_Chaning.postman_collection.json  # Run your Postman collection
 
-      # Optional: Step 5: Upload test results as an artifact for later review
+      # Step 5: Upload Newman Results
       - name: Upload Newman Results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3  # Updated to the latest version
         with:
           name: newman-results
           path: newman-results.json  # Adjust if you want to store detailed results for later
