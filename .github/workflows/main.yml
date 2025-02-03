@@ -1,20 +1,27 @@
-name: Example Workflow
+name: Run Postman Tests
 
 on:
   push:
     branches:
-      - main
+      - main # or your default branch
 
 jobs:
-  build:
+  run-postman-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: npm install
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'  # or the version you need
 
-      - name: Run tests
-        run: npm test
+      - name: Install dependencies
+        run: |
+          npm install -g newman  # Install Newman globally
+
+      - name: Run Postman tests
+        run: |
+          newman run API_Chaning.postman_collection.json  # Run your Postman collection
